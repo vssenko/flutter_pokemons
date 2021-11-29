@@ -71,7 +71,7 @@ class _PokemonState extends State<PokemonScreen> {
     }
 
     return MainLayout(
-        title:
+        titleText:
             pokemon == null ? 'Pokemon' : '#${pokemon!.id}: ${pokemon!.name!}',
         content: Container(
           color: Colors.blue[50],

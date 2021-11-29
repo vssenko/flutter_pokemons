@@ -20,6 +20,7 @@ class PokemonListScreen extends StatefulWidget {
 class _PokemonListState extends State<PokemonListScreen> {
   int? totalCount;
   int currentPage = 0;
+  String? search;
   late final PokemonService _pokemonService;
 
   List<Pokemon>? _pokemons;
@@ -67,7 +68,9 @@ class _PokemonListState extends State<PokemonListScreen> {
       );
     }
     return MainLayout(
-        title: 'Pokemon List',
+        titleText: 'Pokemon List',
+        addSearch: true,
+        onSearch: _applySearch,
         content: Container(
             width: double.infinity,
             height: double.infinity,
@@ -82,14 +85,22 @@ class _PokemonListState extends State<PokemonListScreen> {
     _reloadPokemons();
   }
 
+  _applySearch(String? query) {
+    setState(() {
+      search = query;
+    });
+
+    _reloadPokemons();
+  }
+
   _reloadPokemons() async {
     print('_reloadPokemons');
     setState(() {
       _pokemons = null;
     });
     try {
-      var loadPokemonsResult =
-          await _pokemonService.load(limit: limit, skip: currentPage * limit);
+      var loadPokemonsResult = await _pokemonService.load(
+          name: search, limit: limit, skip: currentPage * limit);
       setState(() {
         print('setting state');
         print(loadPokemonsResult.total);

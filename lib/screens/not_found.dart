@@ -7,7 +7,7 @@ class NotFoundScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainLayout(
-        title: 'Not found',
+        titleText: 'Not found',
         content: Container(
           color: Colors.blue[50],
           alignment: Alignment.center,
