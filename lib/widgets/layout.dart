@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+const debounceTime = 600;
+
 class MainLayout extends StatefulWidget {
   final bool addSearch;
   final Function(String?)? onSearch;
@@ -48,7 +50,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   _onSearchChanged(text) {
     _cancelTimer();
-    _debounce = Timer(const Duration(milliseconds: 1000), () {
+    _debounce = Timer(const Duration(milliseconds: debounceTime), () {
       _fireOnSearch(text);
     });
   }
