@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import './pokemon_row.dart';
 import '../../widgets/loader.dart';
 import '../../widgets/layout.dart';
+import '../../widgets/paginator.dart';
 import '../../services/pokemon.dart';
+
+const limit = 10;
 
 class PokemonListScreen extends StatefulWidget {
   const PokemonListScreen({Key? key}) : super(key: key);
@@ -15,6 +18,8 @@ class PokemonListScreen extends StatefulWidget {
 }
 
 class _PokemonListState extends State<PokemonListScreen> {
+  int? totalCount;
+  int currentPage = 0;
   late final PokemonService _pokemonService;
 
   List<Pokemon>? _pokemons;
@@ -32,7 +37,7 @@ class _PokemonListState extends State<PokemonListScreen> {
   @override
   Widget build(BuildContext context) {
     Widget content;
-    if (_pokemons == null) {
+    if (_pokemons == null || totalCount == null) {
       content = const Center(child: Loader());
     } else {
       List<Widget> pokemonRows = _pokemons!.map((pokemon) {
@@ -41,13 +46,25 @@ class _PokemonListState extends State<PokemonListScreen> {
         );
       }).toList();
 
-      content = Container(
-          padding: const EdgeInsets.only(top: 10),
-          child: Expanded(
+      content = Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Paginator(
+                totalPages: (totalCount! / limit).round(),
+                currentPage: currentPage,
+                onChange: _updatePage,
+              )
+            ],
+          ),
+          Expanded(
               child: ListView(
             shrinkWrap: true,
             children: pokemonRows,
-          )));
+          ))
+        ],
+      );
     }
     return MainLayout(
         title: 'Pokemon List',
@@ -58,10 +75,22 @@ class _PokemonListState extends State<PokemonListScreen> {
             child: content));
   }
 
-  _reloadPokemons() async {
-    var loadedPokemons = await _pokemonService.load();
+  _updatePage(int newPage) {
     setState(() {
-      _pokemons = loadedPokemons;
+      currentPage = newPage;
+    });
+    _reloadPokemons();
+  }
+
+  _reloadPokemons() async {
+    setState(() {
+      _pokemons = null;
+    });
+    var loadPokemonsResult =
+        await _pokemonService.load(limit: limit, skip: currentPage * limit);
+    setState(() {
+      totalCount = loadPokemonsResult.total;
+      _pokemons = loadPokemonsResult.items;
     });
   }
 }

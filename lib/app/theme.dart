@@ -20,6 +20,6 @@ ThemeData buildAppTheme(BuildContext context) {
       primaryTextTheme: oneAndOnlyTextTheme,
       textTheme: oneAndOnlyTextTheme,
       appBarTheme: AppBarTheme(
-          backgroundColor: styles.colorStyles.pokemonRedColor,
-          shadowColor: styles.colorStyles.pokemonYellowColor));
+        backgroundColor: styles.colorStyles.pokemonRedColor,
+      ));
 }
