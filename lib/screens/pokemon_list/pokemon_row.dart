@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/pokemon.dart';
 import '../../utils/dimensions.dart';
+import '../../utils/routes.dart';
 
 const rowHeight = 100.0;
 
@@ -9,12 +10,14 @@ class PokemonRow extends StatelessWidget {
 
   const PokemonRow({Key? key, required this.pokemon}) : super(key: key);
 
-  void _openPokemonPage() {}
+  void _openPokemonPage(BuildContext context) {
+    Navigator.pushNamed(context, Routes.pokemon(pokemon.id));
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: _openPokemonPage,
+        onTap: () => _openPokemonPage(context),
         child: Container(
           width: double.infinity,
           height: rowHeight * 1.15,

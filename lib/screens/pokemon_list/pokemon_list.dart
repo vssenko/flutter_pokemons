@@ -1,10 +1,9 @@
 import 'package:flutter_pokemons/models/pokemon.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import './pokemon_row.dart';
+import '../../widgets/loader.dart';
 import '../../widgets/layout.dart';
 import '../../services/pokemon.dart';
-import '../../utils/styles/styles.dart';
 
 class PokemonListScreen extends StatefulWidget {
   const PokemonListScreen({Key? key}) : super(key: key);
@@ -32,12 +31,9 @@ class _PokemonListState extends State<PokemonListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var styles = Styles(context);
     Widget content;
     if (_pokemons == null) {
-      content = Center(
-          child:
-              SpinKitRotatingCircle(color: styles.colorStyles.pokemonRedColor));
+      content = const Center(child: Loader());
     } else {
       List<Widget> pokemonRows = _pokemons!.map((pokemon) {
         return PokemonRow(
