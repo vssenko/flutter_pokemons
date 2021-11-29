@@ -22,8 +22,11 @@ int addOne(current, total) {
 List<String> buildPaginationValues(
     {required int totalPages, required int currentPage}) {
   List<String> items = [];
-  if (totalPages == 0) {
-    return [];
+  if (totalPages < 5) {
+    for (var i = 0; i < totalPages; i++) {
+      items.add(i.toString());
+    }
+    return items;
   }
   var prev1 = substractOne(currentPage);
   var prev2 = substractOne(prev1);
