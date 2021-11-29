@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 class MainLayout extends StatefulWidget {
@@ -23,6 +24,7 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   TextEditingController _searchQueryController = TextEditingController();
   bool _isSearching = false;
+  Timer? _debounce;
 
   _MainLayoutState();
 
@@ -34,8 +36,21 @@ class _MainLayoutState extends State<MainLayout> {
         border: InputBorder.none,
       ),
       style: const TextStyle(color: Colors.white, fontSize: 16.0),
-      onChanged: _fireOnSearch,
+      onChanged: _onSearchChanged,
     );
+  }
+
+  _cancelTimer() {
+    if (_debounce?.isActive ?? false) {
+      _debounce!.cancel();
+    }
+  }
+
+  _onSearchChanged(text) {
+    _cancelTimer();
+    _debounce = Timer(const Duration(milliseconds: 1000), () {
+      _fireOnSearch(text);
+    });
   }
 
   _fireOnSearch(text) {
@@ -74,6 +89,7 @@ class _MainLayoutState extends State<MainLayout> {
       _searchQueryController.clear();
       _isSearching = false;
     });
+    _cancelTimer();
     _fireOnSearch(null);
   }
 
