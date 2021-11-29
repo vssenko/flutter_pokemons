@@ -28,8 +28,12 @@ class Pokemon {
       this.name,
       this.cname,
       this.jname,
-      this.picture,
-      this.base});
+      String? picture,
+      this.base}) {
+    if (picture != null) {
+      this.picture = Uri.encodeFull(picture);
+    }
+  }
 
   static Pokemon fromJson(dynamic json) {
     _BaseStats? stats;

@@ -25,7 +25,7 @@ class _PokemonListState extends State<PokemonListScreen> {
   List<Pokemon>? _pokemons;
 
   _PokemonListState() {
-    _pokemonService = PokemonService();
+    _pokemonService = const PokemonService();
   }
 
   @override
@@ -37,7 +37,7 @@ class _PokemonListState extends State<PokemonListScreen> {
   @override
   Widget build(BuildContext context) {
     Widget content;
-    if (_pokemons == null || totalCount == null) {
+    if (_pokemons == null) {
       content = const Center(child: Loader());
     } else {
       List<Widget> pokemonRows = _pokemons!.map((pokemon) {
@@ -52,7 +52,7 @@ class _PokemonListState extends State<PokemonListScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Paginator(
-                totalPages: (totalCount! / limit).round(),
+                totalPages: ((totalCount ?? 100) / limit).round(),
                 currentPage: currentPage,
                 onChange: _updatePage,
               )
@@ -83,14 +83,26 @@ class _PokemonListState extends State<PokemonListScreen> {
   }
 
   _reloadPokemons() async {
+    print('_reloadPokemons');
     setState(() {
       _pokemons = null;
     });
-    var loadPokemonsResult =
-        await _pokemonService.load(limit: limit, skip: currentPage * limit);
-    setState(() {
-      totalCount = loadPokemonsResult.total;
-      _pokemons = loadPokemonsResult.items;
-    });
+    try {
+      var loadPokemonsResult =
+          await _pokemonService.load(limit: limit, skip: currentPage * limit);
+      setState(() {
+        print('setting state');
+        print(loadPokemonsResult.total);
+        print(loadPokemonsResult.items);
+        totalCount = loadPokemonsResult.total;
+        _pokemons = loadPokemonsResult.items;
+      });
+    } catch (e) {
+      print(e);
+      setState(() {
+        _pokemons = [];
+      });
+      return;
+    }
   }
 }

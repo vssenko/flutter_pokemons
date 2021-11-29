@@ -16,32 +16,40 @@ class PokemonRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () => _openPokemonPage(context),
-        child: Container(
-          width: double.infinity,
-          height: rowHeight * 1.15,
-          child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(
-                      left: Dimensions.getPercentWidth(context, 5)),
-                  child: Image(
-                    height: rowHeight,
-                    width: rowHeight,
-                    image: NetworkImage(pokemon.picture!),
-                  ),
-                ),
-                Container(
+    try {
+      return InkWell(
+          onTap: () => _openPokemonPage(context),
+          child: Container(
+            width: double.infinity,
+            height: rowHeight * 1.15,
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
                     padding: EdgeInsets.only(
-                        right: Dimensions.getPercentWidth(context, 15)),
-                    child: Text(
-                      pokemon.name!,
-                      style: Theme.of(context).textTheme.headline5,
-                    ))
-              ]),
-        ));
+                        left: Dimensions.getPercentWidth(context, 5)),
+                    child: Image.network(
+                      pokemon.picture!,
+                      height: rowHeight,
+                      width: rowHeight,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return const Text('Stupid Flutter');
+                      },
+                    ),
+                  ),
+                  Container(
+                      padding: EdgeInsets.only(
+                          right: Dimensions.getPercentWidth(context, 15)),
+                      child: Text(
+                        pokemon.name!,
+                        style: Theme.of(context).textTheme.headline5,
+                      ))
+                ]),
+          ));
+    } catch (e) {
+      return Text('Failed to show data');
+    }
   }
 }

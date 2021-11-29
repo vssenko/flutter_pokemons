@@ -19,6 +19,7 @@ class PokemonService {
   const PokemonService();
 
   Future<FetchListResult<Pokemon>> load({int? skip, int? limit}) async {
+    print('load pokemons: skip: $skip, limit: $limit');
     var response = await http.get(_fetchPokemonListUrl);
     List<dynamic> pokemonJsons = json.decode(response.body);
     var result = pokemonJsons.map((pokemonJson) {
