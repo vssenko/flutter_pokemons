@@ -43,8 +43,8 @@ class Pokemon {
           Attack: baseStatsJson['Attack'],
           Defense: baseStatsJson['Defense'],
           HP: baseStatsJson['HP'],
-          SpAttack: baseStatsJson['SpAttack'],
-          SpDefense: baseStatsJson['SpDefense'],
+          SpAttack: baseStatsJson['Sp.Atk'],
+          SpDefense: baseStatsJson['Sp.Def'],
           Speed: baseStatsJson['Speed']);
     }
     return Pokemon(

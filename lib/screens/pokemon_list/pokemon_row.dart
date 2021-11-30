@@ -35,7 +35,7 @@ class PokemonRow extends StatelessWidget {
                       width: rowHeight,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
-                        return const Text('Stupid Flutter');
+                        return const Text('No image');
                       },
                     ),
                   ),

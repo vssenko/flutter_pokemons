@@ -12,10 +12,12 @@ class PokemonCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image(
-          width: Dimensions.getPercentWidth(context, 90),
-          image: NetworkImage(pokemon!.picture!),
-        ),
+        Image.network(pokemon!.picture!,
+            width: Dimensions.getPercentWidth(context, 90), errorBuilder:
+                (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+          return const Text('No image');
+        }),
         Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
